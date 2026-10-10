@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AV BOX - Member Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light">
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-dark bg-danger shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold fst-italic" href="#">AV BOX Member</a>
+      <div class="d-flex align-items-center">
+        <span class="navbar-text text-white me-3" id="navUserName"></span>
+        <button class="btn btn-outline-light btn-sm" onclick="logout()">Keluar</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container py-5">
+    <div class="row">
+      <!-- KARTU MEMBER DIGITAL -->
+      <div class="col-md-6 mb-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body p-4 text-center">
+            <h4 class="fw-bold mb-3">Kartu Digital Anda</h4>
+            
+            <div id="custCard" class="av-card-canva text-start mb-4 mx-auto" style="max-width: 450px;">
+              <div class="av-bg-text">AV</div>
+              <div class="av-layer d-flex justify-content-between">
+                <div class="av-small-text">CAPTURE<br>CREATE<br>KEEP<br>FOREVER</div>
+                <div class="av-small-text text-end">MEMBER CARD<br><span id="cardLevelDisplay" class="badge mt-1" style="font-size: 9px;"></span></div>
+              </div>
+              <div class="av-layer av-center-logo">
+                <h1>AV BOX</h1>
+                <p>MORE THAN A PHOTOBOOTH</p>
+              </div>
+              <div class="av-layer av-info-box">
+                <div class="d-flex align-items-center">
+                  <img id="cardPhotoDisplay" src="" class="av-profile-sm me-2">
+                  <div class="av-info-text">
+                    <h4 id="cardNameDisplay">NAMA</h4>
+                    <p id="cardIdDisplay">ID</p>
+                  </div>
+                </div>
+                <div class="av-barcode-box">
+                  <img id="custBarcode" src="">
+                </div>
+              </div>
+              <div class="av-layer d-flex justify-content-between align-items-end">
+                <div class="av-small-text">🌐 GOOD PHOTOS<br>BETTER PEOPLE</div>
+                <div class="av-small-text text-end">SAME MOMENTS<br>DIFFERENT STORIES</div>
+              </div>
+            </div>
+
+            <!-- TOMBOL GANTI FOTO & UNDUH KARTU -->
+            <div class="row mb-4">
+              <div class="col-6 pe-1">
+                <label class="btn btn-outline-danger btn-sm fw-bold w-100 py-2">
+                  📸 Ganti Foto
+                  <input type="file" accept="image/*" hidden onchange="uploadPhoto(event)">
+                </label>
+              </div>
+              <div class="col-6 ps-1">
+                <button class="btn btn-danger btn-sm fw-bold w-100 py-2" onclick="unduhKartuUtuh()" id="btnUnduhCust">
+                  ⬇️ Unduh Kartu
+                </button>
+              </div>
+            </div>
+            
+            <!-- STATISTIK POIN -->
+            <div class="row text-center">
+              <div class="col-6"><div class="p-3 border rounded bg-light"><h6 class="text-muted mb-1">Poin</h6><h3 class="fw-bold text-danger m-0" id="custPoints"></h3></div></div>
+              <div class="col-6"><div class="p-3 border rounded bg-light"><h6 class="text-muted mb-1">Diskon</h6><h3 class="fw-bold text-dark m-0"><span id="custDiscount"></span>%</h3></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BENEFIT LEVEL -->
+      <div class="col-md-6 mb-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body p-4">
+            <h5 class="fw-bold mb-3">🎁 Keuntungan Level</h5>
+            <ul class="list-group list-group-flush" id="benefitList"></ul>
+            <div class="alert alert-info mt-3 border-0"><small><strong>Trik:</strong> Foto kembali dalam waktu kurang dari 7 hari untuk Bonus Poin Kedatangan!</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- WAJIB: Library Unduh Gambar dan Barcode -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+  <script src="js/member.js"></script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AV BOX - Admin System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light">
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-danger shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold fst-italic" href="#">AV BOX Admin</a>
+      <div class="collapse navbar-collapse d-flex justify-content-between">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link active fw-bold" href="#" onclick="toggleMenu('view-data')">Data Member</a></li>
+          <li class="nav-item"><a class="nav-link active fw-bold" href="#" onclick="toggleMenu('view-pos')">Kasir & Scan</a></li>
+        </ul>
+        <div>
+          <span class="navbar-text text-white me-3" id="navUserName"></span>
+          <button class="btn btn-outline-light btn-sm" onclick="logout()">Keluar</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container py-5">
+    
+    <!-- HALAMAN DATABASE MEMBER -->
+    <section id="view-data" class="view">
+      <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+        <h3 class="fw-bold m-0">Database Pelanggan</h3>
+        <div>
+          <button class="btn btn-dark" onclick="aturDiskonLevel()">⚙️ Pengaturan Diskon</button>
+        </div>
+      </div>
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle m-0">
+              <thead class="table-danger">
+                <tr>
+                  <th class="ps-4">ID Member</th>
+                  <th>Nama & Profil</th>
+                  <th>WhatsApp</th>
+                  <th>Poin</th>
+                  <th>Level</th>
+                  <th class="text-center">Aksi (CRUD)</th>
+                </tr>
+              </thead>
+              <tbody id="tableMembersBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HALAMAN KASIR (POS) -->
+    <section id="view-pos" class="view d-none">
+      <h3 class="fw-bold mb-4">Kasir & Scanner</h3>
+      <div class="row">
+        <!-- Kotak Pencarian -->
+        <div class="col-md-6 mb-4">
+          <div class="card border-0 shadow-sm h-100 p-4">
+            <button class="btn btn-outline-danger w-100 mb-3 fw-bold" id="btnScan" onclick="toggleScanner()">📸 Buka Kamera Scanner</button>
+            <div id="reader" class="mb-4 bg-light rounded" style="display: none; border: 2px dashed #dc3545;"></div>
+            <h5 class="fw-bold mb-2">Input Manual</h5>
+            <div class="input-group">
+              <input type="text" id="scanId" class="form-control" placeholder="Contoh: AVB001">
+              <button class="btn btn-danger" onclick="prosesScan()">Cari Member</button>
+            </div>
+          </div>
+        </div>
+        <!-- Kotak Hitung Harga Transaksi -->
+        <div class="col-md-6 mb-4">
+          <div class="card border-0 shadow-sm h-100 p-4" id="posArea" style="opacity: 0.5; pointer-events: none;">
+            <div class="bg-light p-3 rounded mb-3 border">
+              <h4 class="fw-bold text-uppercase mb-1" id="posName">-</h4>
+              <p class="m-0">ID: <span id="posId">-</span> | Level: <strong class="text-danger" id="posLevel">-</strong></p>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold">Harga Sesi (Rp)</label>
+              <input type="number" id="posBelanja" class="form-control" value="45000" disabled>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="text-muted">Potongan (<span id="posDiskonPersen">0</span>%)</span>
+              <span class="text-danger fw-bold">- Rp <span id="posDiskonNominal">0</span></span>
+            </div>
+            <div class="p-3 bg-danger text-white rounded mb-4">
+              <p class="m-0 text-white-50">Total Harus Dibayar</p>
+              <h2 class="fw-bold m-0">Rp <span id="posTotalBayar">0</span></h2>
+            </div>
+            <button class="btn btn-dark w-100 fw-bold py-2" onclick="selesaikanTransaksi()">Bayar & Acak Poin</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- MODAL ADMIN UNDUH KARTU (FIXED DOWNLOAD) -->
+  <div class="modal fade" id="modalKartuAdmin" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Preview Kartu Digital</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body pb-4 bg-light">
+          
+          <div id="adminCardPreview" class="av-card-canva text-start mb-4 mx-auto" style="max-width: 450px;">
+            <div class="av-bg-text">AV</div>
+            <div class="av-layer d-flex justify-content-between">
+              <div class="av-small-text">CAPTURE<br>CREATE<br>KEEP<br>FOREVER</div>
+              <div class="av-small-text text-end">MEMBER CARD<br><span id="modalAdminLevel" class="badge mt-1" style="font-size: 9px;"></span></div>
+            </div>
+            <div class="av-layer av-center-logo">
+              <h1>AV BOX</h1>
+              <p>MORE THAN A PHOTOBOOTH</p>
+            </div>
+            <div class="av-layer av-info-box">
+              <div class="d-flex align-items-center">
+                <img id="modalAdminPhoto" src="" class="av-profile-sm me-2">
+                <div class="av-info-text">
+                  <h4 id="modalAdminNama"></h4>
+                  <p id="modalAdminId"></p>
+                </div>
+              </div>
+              <div class="av-barcode-box">
+                <img id="modalAdminBarcode" src="">
+              </div>
+            </div>
+            <div class="av-layer d-flex justify-content-between align-items-end">
+              <div class="av-small-text">🌐 GOOD PHOTOS<br>BETTER PEOPLE</div>
+              <div class="av-small-text text-end">SAME MOMENTS<br>DIFFERENT STORIES</div>
+            </div>
+          </div>
+
+          <button onclick="unduhKartuUtuh()" class="btn btn-danger w-100 fw-bold" id="btnUnduh">⬇️ Unduh Gambar Kartu Resolusi Tinggi</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Scanner Kamera -->
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <!-- Konversi HTML menjadi Canvas untuk Gambar (Bisa diunduh) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <!-- Library JS Barcode Lokal (Anti-Error / Anti-CORS) -->
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+  
+  <script src="js/admin.js"></script>
+</body>
+</html>

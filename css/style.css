@@ -1,0 +1,85 @@
+/* ========================================= */
+/* 1. PENGATURAN UMUM TEMA WEB               */
+/* ========================================= */
+:root { 
+  --red: #c91f28; /* Merah Utama AV BOX */
+  --red2: #98151c; /* Merah Gelap untuk Gradasi */
+  --line: #e6d9ca; 
+  --ink: #1c1c1c; /* Warna Teks Hitam */
+}
+
+body { 
+  margin: 0; 
+  font-family: system-ui, -apple-system, sans-serif; 
+  background: #f6efe3; /* Background krem elegan */
+  color: var(--ink); 
+}
+
+/* ========================================= */
+/* 2. DESAIN KARTU DIGITAL ALA CANVA         */
+/* ========================================= */
+.av-card-canva {
+  width: 100%; 
+  aspect-ratio: 1.6 / 1; /* Rasio standar kartu ATM / KTP */
+  background: linear-gradient(135deg, #a80f14, #6b0606); /* Warna merah ala desainmu */
+  border-radius: 16px; 
+  position: relative; 
+  overflow: hidden;
+  color: white; 
+  box-shadow: 0 15px 35px rgba(0,0,0,0.25); /* Efek melayang */
+  padding: 20px; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-between;
+}
+
+/* Efek Tulisan Watermark "AV" Besar di Belakang Kartu */
+.av-bg-text {
+  position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%);
+  font-size: 160px; font-weight: 900; color: rgba(255, 255, 255, 0.05);
+  z-index: 0; line-height: 1; pointer-events: none;
+}
+
+/* Kunci layer agar elemen teks berada di atas watermark */
+.av-layer { position: relative; z-index: 2; }
+
+/* Tipografi Kecil (Header & Footer Kartu) */
+.av-small-text { font-size: 8px; letter-spacing: 1.5px; line-height: 1.4; opacity: 0.9; font-weight: 600; }
+
+/* Logo Utama di Tengah Kartu */
+.av-center-logo { text-align: center; margin-top: 5px; }
+.av-center-logo h1 { font-size: 42px; font-weight: 900; margin: 0; letter-spacing: 2px; text-shadow: 2px 2px 5px rgba(0,0,0,0.3); }
+.av-center-logo p { font-size: 9px; letter-spacing: 4px; margin: 0; opacity: 0.9; }
+
+/* ========================================= */
+/* 3. KOTAK INFO (FOTO, NAMA, BARCODE)       */
+/* ========================================= */
+.av-info-box {
+  background: #f8f9fa; /* Warna kotak putih */
+  border-radius: 10px; padding: 10px 15px;
+  display: flex; justify-content: space-between; align-items: center;
+  color: #111; width: 90%; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  margin-top: auto; margin-bottom: 15px;
+}
+.av-info-text h4 { font-size: 13px; font-weight: 900; margin: 0; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
+.av-info-text p { font-size: 11px; font-family: monospace; margin: 0; color: #555; font-weight: bold; }
+
+/* Tempat Barcode */
+.av-barcode-box { background: white; padding: 4px; border-radius: 4px; }
+.av-barcode-box img { height: 35px; width: 110px; object-fit: contain; }
+
+/* ========================================= */
+/* 4. FOTO PROFIL KTP & TANGGAL              */
+/* ========================================= */
+.av-profile-sm {
+  width: 45px; height: 60px; /* Ukuran pas foto ala KTP */
+  border-radius: 6px; object-fit: cover;
+  border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+.profile-img-sm { width: 35px; height: 45px; border-radius: 4px; object-fit: cover; border: 1px solid #ccc; }
+.av-join-date { font-size: 8px; font-family: monospace; color: #666; margin-top: 2px; margin-bottom: 0; }
+
+/* ========================================= */
+/* 5. KAMERA SCANNER KASIR                   */
+/* ========================================= */
+#reader video { border-radius: 8px; width: 100% !important; } /* Bikin kamera membulat dan rapi */
